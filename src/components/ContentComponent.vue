@@ -5,7 +5,7 @@
   
       <div class="d-flex justify-content-center mb-3">
       <div class="dropdown mx-2">
-        <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownGender" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownGender" data-bs-toggle="dropdown" aria-expanded="false">
             Filter by Gender: {{ genderOptions[genderFilter] || genderOptions.all }}
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownGender">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="dropdown mx-2">
-        <button class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownBirthYear" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownBirthYear" data-bs-toggle="dropdown" aria-expanded="false">
            Filter by Birth Year:  {{ birthYearFilter.min === 0 && birthYearFilter.max === 1000 ? 'All Years' : (birthYearFilter.min === 20 && birthYearFilter.max === 40 ? '20 - 40 BBY' : `${birthYearFilter.min} - ${birthYearFilter.max} BBY`) }}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownBirthYear">
