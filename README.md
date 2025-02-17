@@ -20,3 +20,6 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 
 ![App Screenshot](screenshots/starwars4.png)
+
+
+![App Screenshot](screenshots/starwars5.png)
