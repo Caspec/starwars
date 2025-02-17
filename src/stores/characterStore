@@ -1,0 +1,75 @@
+import { defineStore } from 'pinia';
+import axios from 'axios';
+
+export const useCharacterStore = defineStore('characterStore', {
+  state: () => ({
+    characters: [],
+    loading: false,
+    error: null,
+    genderFilter: '',
+    birthYearFilter: { min: 0, max: 1000 },
+    currentPage: 1,
+    totalPages: 0,
+    genderOptions: {
+      all: 'All',
+      male: 'Male',
+      female: 'Female',
+    },
+  }),
+  actions: {
+    async fetchCharacters(page = 1) {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await axios.get(`https://swapi.dev/api/people/?page=${page}`);
+        const characters = response.data.results;
+
+        for (let character of characters) {
+          const homeworldResponse = await axios.get(character.homeworld);
+          character.homeworldName = homeworldResponse.data.name;
+        }
+
+        this.characters = characters;
+        this.totalPages = Math.ceil(response.data.count / 10);
+      } catch (err) {
+        this.error = 'Failed to load characters.';
+        console.error(err);
+      }
+      this.loading = false;
+    },
+
+    setGenderFilter(gender) {
+      this.genderFilter = gender;
+    },
+
+    setBirthYearFilter(min, max) {
+      this.birthYearFilter = { min, max };
+    },
+
+    setPage(page) {
+      this.currentPage = page;
+      this.fetchCharacters(page);
+    },
+  },
+
+  getters: {
+    filteredCharacters(state) {
+      let filtered = state.characters;
+      
+      if (state.genderFilter) {
+        filtered = filtered.filter(char => char.gender === state.genderFilter);
+      }
+
+      filtered = filtered.filter(char => {
+        if (isNaN(parseInt(char.birth_year))) {
+          return true;
+        }
+
+        const birthYear = parseInt(char.birth_year);
+        return birthYear >= state.birthYearFilter.min && birthYear <= state.birthYearFilter.max;
+      });
+
+      return filtered;
+    },
+  },
+});
