@@ -61,13 +61,14 @@ export const useCharacterStore = defineStore('characterStore', {
       }
 
       filtered = filtered.filter(char => {
-        if (isNaN(parseInt(char.birth_year))) {
-          return true;
-        }
-
         const birthYear = parseInt(char.birth_year);
-        return birthYear >= state.birthYearFilter.min && birthYear <= state.birthYearFilter.max;
-      });
+    
+        if (state.birthYearFilter.min === 0 && state.birthYearFilter.max === 1000) {
+            return isNaN(birthYear) || (birthYear >= state.birthYearFilter.min && birthYear <= state.birthYearFilter.max);
+        }
+    
+        return !isNaN(birthYear) && birthYear >= state.birthYearFilter.min && birthYear <= state.birthYearFilter.max;
+    });
 
       return filtered;
     },
